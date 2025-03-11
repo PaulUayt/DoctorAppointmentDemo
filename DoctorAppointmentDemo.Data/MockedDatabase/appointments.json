@@ -1,0 +1,14 @@
+[
+  {
+    "DoctorType": 1,
+    "Experience": 20,
+    "Salary": 0.0,
+    "Name": "Vasya",
+    "Surname": "Petrov",
+    "Phone": null,
+    "Email": null,
+    "Id": 4,
+    "CreatedAt": "2025-03-11T19:09:41.1710952+02:00",
+    "UpdatedAt": "0001-01-01T00:00:00"
+  }
+]
