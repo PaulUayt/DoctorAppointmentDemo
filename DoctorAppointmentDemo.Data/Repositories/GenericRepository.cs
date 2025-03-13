@@ -2,6 +2,7 @@
 using MyDoctorAppointment.Data.Interfaces;
 using MyDoctorAppointment.Domain.Entities;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace MyDoctorAppointment.Data.Repositories
 {
@@ -65,10 +66,27 @@ namespace MyDoctorAppointment.Data.Repositories
             return source;
         }
 
-        public abstract void ShowInfo(TSource source);
+        public void ShowInfo(TSource source)
+        {
+            if (source == null)
+            {
+                Console.WriteLine("Object not found");
+                return;
+            }
+
+            Type type = source.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+
+            Console.WriteLine($"Info about {type.Name}:");
+            foreach (PropertyInfo prop in properties)
+            {
+                object value = prop.GetValue(source) ?? "Not found";
+                Console.WriteLine($"{prop.Name}: {value}");
+            }
+        }
 
         protected abstract void SaveLastId();
 
-        protected dynamic ReadFromAppSettings() => JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(Constants.AppSettingsPath))!;
+        protected Config ReadFromAppSettings() => JsonConvert.DeserializeObject<Config>(File.ReadAllText(Constants.AppSettingsPath))!;
     }
 }

@@ -1,35 +1,33 @@
 ﻿using MyDoctorAppointment.Data.Configuration;
 using MyDoctorAppointment.Data.Interfaces;
 using MyDoctorAppointment.Domain.Entities;
-using MyDoctorAppointment.Domain.Enums;
 using Newtonsoft.Json;
-using System.Reflection;
 
 namespace MyDoctorAppointment.Data.Repositories
 {
-    public class DoctorRepository : GenericRepository<Doctor> , IDoctorRepository
+    public class PatientRepository : GenericRepository<Patient>, IPatientRepository
     {
         public override string Path { get; set; }
-
         public override int LastId { get; set; }
 
-        public DoctorRepository()
+        public PatientRepository()
         {
             Config config = ReadFromAppSettings();
 
-            Path = config.Database.Doctors.Path;
-            LastId = config.Database.Doctors.LastId;
+            Path = config.Database.Patients.Path;
+            LastId = config.Database.Patients.LastId;
         }
 
         protected override void SaveLastId()
         {
             Config config = ReadFromAppSettings();
-            config.Database.Doctors.LastId = LastId;
+            config.Database.Patients.LastId = LastId;
 
             File.WriteAllText(Constants.AppSettingsPath, JsonConvert.SerializeObject(config, Formatting.Indented));
+
         }
 
-        public Doctor? GetByPhone(string phone)
+        public Patient? GetByPhone(string phone)
         {
             return GetAll().FirstOrDefault(x => x.Phone == phone);
         }
