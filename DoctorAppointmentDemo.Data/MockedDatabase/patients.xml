@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfPatient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Patient>
+    <Id>9</Id>
+    <CreatedAt>2025-03-27T18:07:30.7307596+02:00</CreatedAt>
+    <UpdatedAt>0001-01-01T00:00:00</UpdatedAt>
+    <Name>pop</Name>
+    <Surname>pop</Surname>
+    <Phone>123</Phone>
+    <Email />
+    <IllnessType>Infection</IllnessType>
+    <AdditionalInfo />
+    <Address />
+  </Patient>
+  <Patient>
+    <Id>10</Id>
+    <CreatedAt>2025-03-27T18:08:02.6203915+02:00</CreatedAt>
+    <UpdatedAt>0001-01-01T00:00:00</UpdatedAt>
+    <Name>tady</Name>
+    <Surname>poper</Surname>
+    <Phone>111</Phone>
+    <Email />
+    <IllnessType>Infection</IllnessType>
+    <AdditionalInfo>4</AdditionalInfo>
+    <Address>3</Address>
+  </Patient>
+</ArrayOfPatient>

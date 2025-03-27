@@ -1,23 +1,37 @@
-﻿using MyDoctorAppointment.Data.Configuration;
-using MyDoctorAppointment.Data.Interfaces;
-using MyDoctorAppointment.Domain.Entities;
+﻿using DoctorAppointment.Data.Configuration;
+using DoctorAppointment.Data.Interfaces;
+using DoctorAppointment.Domain.Entities;
+using DoctorAppointmentDemo.Data.Interfaces;
 using Newtonsoft.Json;
 using System.Reflection;
 
-namespace MyDoctorAppointment.Data.Repositories
+namespace DoctorAppointment.Data.Repositories
 {
     public abstract class GenericRepository<TSource> : IGenericRepository<TSource> where TSource : Auditable
     {
+        private readonly ISerializationService _serializationService;
+        protected string Appsettings { get; set; }
+
         public abstract string Path { get; set; }
 
         public abstract int LastId { get; set; }
 
+
+        public GenericRepository(string appsettings, ISerializationService serializationService)
+        {
+            _serializationService = serializationService;
+            Appsettings = appsettings;
+        }
+
         public TSource Create(TSource source)
         {
+            var patients = GetAll<TSource>().ToList();
             source.Id = ++LastId;
             source.CreatedAt = DateTime.Now;
 
-            File.WriteAllText(Path, JsonConvert.SerializeObject(GetAll().Append(source), Formatting.Indented));
+            patients.Add(source);
+
+            _serializationService.Serialize(patients, Path);
             SaveLastId();
 
             return source;
@@ -25,43 +39,34 @@ namespace MyDoctorAppointment.Data.Repositories
 
         public bool Delete(int id)
         {
-            if (GetById(id) is null)
-                return false;
-
-            File.WriteAllText(Path, JsonConvert.SerializeObject(GetAll().Where(x => x.Id != id), Formatting.Indented));
-
+            if (GetById(id) is null) return false;
+            _serializationService.Serialize(GetAll<TSource>().Where(x => x.Id != id), Path);
             return true;
         }
 
-        public IEnumerable<TSource> GetAll()
+        public IEnumerable<T> GetAll<T>()
         {
-            if (!File.Exists(Path))
+            if (!File.Exists(Path) || new FileInfo(Path).Length == 0) return new List<T>();
+
+            try
             {
-                File.WriteAllText(Path, "[]");
+                return _serializationService.Deserialize<List<T>>(Path);
             }
-
-            var json = File.ReadAllText(Path);
-
-            if (string.IsNullOrWhiteSpace(json))
+            catch (Exception ex)
             {
-                File.WriteAllText(Path, "[]");
-                json = "[]";
+                Console.WriteLine($"Deserialisation error: {ex.Message}");
+                return new List<T>();
             }
-
-            return JsonConvert.DeserializeObject<List<TSource>>(json)!;
         }
 
-        public TSource? GetById(int id)
-        {
-            return GetAll().FirstOrDefault(x => x.Id == id);
-        }
+        public TSource? GetById(int id) => GetAll<TSource>().FirstOrDefault(x => x.Id == id);
 
         public TSource Update(int id, TSource source)
         {
             source.UpdatedAt = DateTime.Now;
             source.Id = id;
 
-            File.WriteAllText(Path, JsonConvert.SerializeObject(GetAll().Select(x => x.Id == id ? source : x), Formatting.Indented));
+            _serializationService.Serialize(GetAll<TSource>().Select(x => x.Id == id ? source : x), Path);
 
             return source;
         }
@@ -86,7 +91,6 @@ namespace MyDoctorAppointment.Data.Repositories
         }
 
         protected abstract void SaveLastId();
-
-        protected Config ReadFromAppSettings() => JsonConvert.DeserializeObject<Config>(File.ReadAllText(Constants.AppSettingsPath))!;
+        protected Config ReadFromAppSettings() => JsonConvert.DeserializeObject<Config>(File.ReadAllText(Appsettings))!;
     }
 }

@@ -1,9 +1,10 @@
-﻿using MyDoctorAppointment.Domain.Enums;
+﻿using DoctorAppointment.Domain.Enums;
 
-namespace MyDoctorAppointment.Domain.Entities
+namespace DoctorAppointment.Domain.Entities
 {
     public class Doctor : UserBase
     {
+        public Doctor() { }
         public DoctorTypes DoctorType { get; set; }
 
         public byte Experience { get; set; }

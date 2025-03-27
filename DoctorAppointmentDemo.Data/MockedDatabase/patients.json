@@ -22,5 +22,29 @@
     "Id": 2,
     "CreatedAt": "2025-03-13T15:11:40.9631445+02:00",
     "UpdatedAt": "0001-01-01T00:00:00"
+  },
+  {
+    "IllnessType": 4,
+    "AdditionalInfo": "",
+    "Address": "",
+    "Name": "Stefan",
+    "Surname": "Igo",
+    "Phone": "1111",
+    "Email": "",
+    "Id": 3,
+    "CreatedAt": "2025-03-26T22:55:09.5149389+02:00",
+    "UpdatedAt": "0001-01-01T00:00:00"
+  },
+  {
+    "IllnessType": 2,
+    "AdditionalInfo": "",
+    "Address": "",
+    "Name": "pop",
+    "Surname": "pop",
+    "Phone": "222",
+    "Email": "",
+    "Id": 4,
+    "CreatedAt": "2025-03-27T18:17:18.1430566+02:00",
+    "UpdatedAt": "0001-01-01T00:00:00"
   }
 ]

@@ -1,11 +1,11 @@
-﻿using MyDoctorAppointment.Data.Configuration;
-using MyDoctorAppointment.Data.Interfaces;
-using MyDoctorAppointment.Domain.Entities;
-using MyDoctorAppointment.Domain.Enums;
+﻿using DoctorAppointment.Data.Configuration;
+using DoctorAppointment.Data.Interfaces;
+using DoctorAppointment.Domain.Entities;
+using DoctorAppointmentDemo.Data.Interfaces;
 using Newtonsoft.Json;
-using System.Reflection;
 
-namespace MyDoctorAppointment.Data.Repositories
+
+namespace DoctorAppointment.Data.Repositories
 {
     public class DoctorRepository : GenericRepository<Doctor> , IDoctorRepository
     {
@@ -13,7 +13,7 @@ namespace MyDoctorAppointment.Data.Repositories
 
         public override int LastId { get; set; }
 
-        public DoctorRepository()
+        public DoctorRepository(string appsetting, ISerializationService serializationService) : base(appsetting, serializationService)
         {
             Config config = ReadFromAppSettings();
 
@@ -26,12 +26,12 @@ namespace MyDoctorAppointment.Data.Repositories
             Config config = ReadFromAppSettings();
             config.Database.Doctors.LastId = LastId;
 
-            File.WriteAllText(Constants.AppSettingsPath, JsonConvert.SerializeObject(config, Formatting.Indented));
+            File.WriteAllText(Constants.AppSettingsPathJson, JsonConvert.SerializeObject(config, Formatting.Indented));
         }
 
         public Doctor? GetByPhone(string phone)
         {
-            return GetAll().FirstOrDefault(x => x.Phone == phone);
+            return GetAll<Doctor>().FirstOrDefault(x => x.Phone == phone);
         }
     }
 }

@@ -1,17 +1,20 @@
-﻿using MyDoctorAppointment.Data.Configuration;
-using MyDoctorAppointment.Data.Interfaces;
-using MyDoctorAppointment.Domain.Entities;
+﻿using DoctorAppointment.Data.Configuration;
+using DoctorAppointment.Data.Interfaces;
+using DoctorAppointment.Domain.Entities;
+using DoctorAppointmentDemo.Data.Interfaces;
 using Newtonsoft.Json;
 
-namespace MyDoctorAppointment.Data.Repositories
+namespace DoctorAppointment.Data.Repositories
 {
     public class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
     {
         public override string Path { get; set; }
         public override int LastId { get; set; }
 
-        public AppointmentRepository()
+        public AppointmentRepository(string appsetting, ISerializationService serializationService) : base(appsetting, serializationService)
         {
+            
+
             Config config = ReadFromAppSettings();
 
             Path = config.Database.Appointments.Path;

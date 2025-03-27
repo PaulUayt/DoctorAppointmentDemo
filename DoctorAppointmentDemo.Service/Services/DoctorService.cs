@@ -1,16 +1,18 @@
-﻿using MyDoctorAppointment.Data.Repositories;
-using MyDoctorAppointment.Domain.Entities;
-using MyDoctorAppointment.Service.Interfaces;
+﻿using DoctorAppointment.Data.Interfaces;
+using DoctorAppointment.Data.Repositories;
+using DoctorAppointment.Domain.Entities;
+using DoctorAppointment.Service.Interfaces;
+using DoctorAppointmentDemo.Data.Interfaces;
 
-namespace MyDoctorAppointment.Service.Services
+namespace DoctorAppointment.Service.Services
 {
     public class DoctorService : IDoctorService
     {
-        private readonly DoctorRepository _doctorRepository;
+        private readonly IDoctorRepository _doctorRepository;
 
-        public DoctorService()
+        public DoctorService(string appsetting, ISerializationService serializationService)
         {
-            _doctorRepository = new DoctorRepository();
+            _doctorRepository = new DoctorRepository(appsetting, serializationService);
         }
 
         public Doctor Create(Doctor doctor)
@@ -35,7 +37,7 @@ namespace MyDoctorAppointment.Service.Services
 
         public IEnumerable<Doctor> GetAll()
         {
-            return _doctorRepository.GetAll();
+            return _doctorRepository.GetAll<Doctor>();
         }
 
         public void ShowInfo(Doctor doctor)
