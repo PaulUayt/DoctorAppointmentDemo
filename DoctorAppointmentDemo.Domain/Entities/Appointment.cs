@@ -1,5 +1,8 @@
-﻿namespace DoctorAppointment.Domain.Entities
+﻿using System.Xml.Serialization;
+
+namespace DoctorAppointment.Domain.Entities
 {
+    [XmlRoot("ArrayOfAppointment")]
     public class Appointment : Auditable
     {
         public Patient? Patient { get; set; }
