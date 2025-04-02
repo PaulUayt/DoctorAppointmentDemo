@@ -1,6 +1,5 @@
 ﻿using DoctorAppointment.UI.Menus.Enums;
 using DoctorAppointment.Domain.Entities;
-using DoctorAppointment.Domain.Enums;
 using DoctorAppointment.Service.Interfaces;
 
 namespace DoctorAppointmentDemo.UI.Menus
@@ -31,11 +30,6 @@ namespace DoctorAppointmentDemo.UI.Menus
                 }
 
                 AddFuncs.DisplayMenuHeader("Functional Page of Patient");
-
-                //foreach (var patient in _patientService.GetAll())
-                //{
-                //    _patientService.ShowInfo(patient);
-                //}
 
                 Console.Write("Enter your phone number: ");
                 string? phone = Console.ReadLine();
@@ -102,7 +96,19 @@ namespace DoctorAppointmentDemo.UI.Menus
 
         private void ShowDoctorsList()
         {
-            throw new NotImplementedException();
+            var doctors = _doctorService.GetAll();
+            if (doctors.Count() == 0)
+            {
+                Console.WriteLine("There are no doctors in the system.");
+                return;
+            }
+            foreach (var doctor in doctors)
+            {
+                _doctorService.ShowInfo(doctor);
+            }
+
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
         }
 
         private void UpdatePatientInfo()
@@ -134,7 +140,7 @@ namespace DoctorAppointmentDemo.UI.Menus
                 Surname = AddFuncs.GetRequiredInput("Surname"),
                 Phone = GetUniquePhone(),
                 Email = AddFuncs.GetOptionalInput("Email"),
-                IllnessType = GetIllnessType(),
+                IllnessType = AddFuncs.GetIllnessType(),
                 Address = AddFuncs.GetOptionalInput("Address"),
                 AdditionalInfo = AddFuncs.GetOptionalInput("Additional info")
             };
@@ -158,16 +164,5 @@ namespace DoctorAppointmentDemo.UI.Menus
             } while (CheckPatient(phone));
             return phone;
         }
-
-        private IllnessTypes GetIllnessType()
-        {
-            Console.WriteLine("List of illness:");
-            foreach (IllnessTypes illness in Enum.GetValues(typeof(IllnessTypes)))
-            {
-                Console.WriteLine($"{(int)illness} - {illness}");
-            }
-            return (IllnessTypes)AddFuncs.GetOperation("Illness type: ", 1, 6);
-        }
-
     }
 }

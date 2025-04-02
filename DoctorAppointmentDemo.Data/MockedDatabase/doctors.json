@@ -5,7 +5,7 @@
     "Salary": 0.0,
     "Name": "Vasya",
     "Surname": "Petrov",
-    "Phone": null,
+    "Phone": 123,
     "Email": null,
     "Id": 1,
     "CreatedAt": "2024-01-04T21:15:00.5742047+02:00",

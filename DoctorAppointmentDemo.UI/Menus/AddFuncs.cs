@@ -1,4 +1,6 @@
-﻿namespace DoctorAppointmentDemo.UI.Menus
+﻿using DoctorAppointment.Domain.Enums;
+
+namespace DoctorAppointmentDemo.UI.Menus
 {
     static class AddFuncs
     {
@@ -34,6 +36,17 @@
             return Console.ReadLine() ?? string.Empty;
         }
 
+        internal static decimal GetNumeInput(string fieldName)
+        {
+            decimal num;
+            Console.Write($"{fieldName}: ");
+            while (!decimal.TryParse(Console.ReadLine(), out num))
+            {
+                Console.WriteLine($"Invalid {fieldName}. Please enter a valid number:");
+            }
+            return num;
+        }
+
         internal static void DisplayMenuHeader(string header)
         {
             Console.Clear();
@@ -53,6 +66,16 @@
                 if (input == "n") return false;
                 Console.WriteLine("Invalid input. Please enter 'y' or 'n'.");
             }
+        }
+
+        internal static IllnessTypes GetIllnessType()
+        {
+            Console.WriteLine("List of illness:");
+            foreach (IllnessTypes illness in Enum.GetValues(typeof(IllnessTypes)))
+            {
+                Console.WriteLine($"{(int)illness} - {illness}");
+            }
+            return (IllnessTypes)AddFuncs.GetOperation("Illness type: ", 1, 6);
         }
     }
 }

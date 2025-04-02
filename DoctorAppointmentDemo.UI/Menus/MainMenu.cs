@@ -38,7 +38,7 @@ namespace DoctorAppointmentDemo.UI.Menus
                         break;
 
                     case MainMenuOption.Doctor:
-                        //_doctorMenu.Show();
+                        _doctorMenu.Show();
                         break;
 
                     case MainMenuOption.Administrator:
